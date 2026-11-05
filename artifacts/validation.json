@@ -1,0 +1,270 @@
+{
+  "errors": [],
+  "presets": [
+    {
+      "preset": "speed",
+      "error": 0,
+      "draws": 624,
+      "frameP95": 483.4,
+      "fpsText": "FPS: 3 · HIGH · 5.8 ms CPU · 1047 draws",
+      "cpuMS": 1.5
+    },
+    {
+      "preset": "balanced",
+      "error": 0,
+      "draws": 628,
+      "frameP95": 716.6,
+      "fpsText": "FPS: 1 · SPEED · 2.0 ms CPU · 624 draws",
+      "cpuMS": 1.2
+    },
+    {
+      "preset": "high",
+      "error": 0,
+      "draws": 628,
+      "frameP95": 716.6,
+      "fpsText": "FPS: 3 · HIGH · 466.2 ms CPU · 1397 draws",
+      "cpuMS": 1.3
+    },
+    {
+      "preset": "ultra",
+      "error": 0,
+      "draws": 1363,
+      "frameP95": 566.6,
+      "fpsText": "FPS: 3 · ULTRA · 494.9 ms CPU · 1517 draws",
+      "cpuMS": 3.2
+    },
+    {
+      "preset": "cinematic",
+      "error": 0,
+      "draws": 1517,
+      "frameP95": 566.6,
+      "fpsText": "FPS: 2 · ULTRA · 2.7 ms CPU · 1363 draws",
+      "cpuMS": 670.3
+    }
+  ],
+  "layouts": [
+    {
+      "fullscreen": true,
+      "viewport": [
+        1280,
+        720
+      ],
+      "bodyOverflow": false,
+      "panelHorizontalOverflow": false,
+      "canvas": [
+        860,
+        653.609375
+      ],
+      "panelScroll": false
+    },
+    {
+      "fullscreen": true,
+      "viewport": [
+        1536,
+        864
+      ],
+      "bodyOverflow": false,
+      "panelHorizontalOverflow": false,
+      "canvas": [
+        1116,
+        777.71875
+      ],
+      "panelScroll": false
+    },
+    {
+      "fullscreen": true,
+      "viewport": [
+        1920,
+        1080
+      ],
+      "bodyOverflow": false,
+      "panelHorizontalOverflow": false,
+      "canvas": [
+        1500,
+        993.71875
+      ],
+      "panelScroll": false
+    },
+    {
+      "fullscreen": true,
+      "viewport": [
+        2560,
+        1440
+      ],
+      "bodyOverflow": false,
+      "panelHorizontalOverflow": false,
+      "canvas": [
+        2140,
+        1353.71875
+      ],
+      "panelScroll": false
+    }
+  ],
+  "weapons": [
+    {
+      "type": "gun",
+      "damage": 87,
+      "particles": 3
+    },
+    {
+      "type": "mg",
+      "damage": 160,
+      "particles": 12
+    },
+    {
+      "type": "rail",
+      "damage": 160,
+      "particles": 0
+    },
+    {
+      "type": "cryo",
+      "damage": 46,
+      "particles": 9
+    },
+    {
+      "type": "mortar",
+      "damage": 105,
+      "particles": 0
+    },
+    {
+      "type": "arc",
+      "damage": 136,
+      "particles": 1
+    },
+    {
+      "type": "flame",
+      "damage": 157.2666666666687,
+      "particles": 35
+    }
+  ],
+  "abilities": true,
+  "campaign": [
+    {
+      "wave": 1,
+      "hp": 28,
+      "kills": 26,
+      "done": true
+    },
+    {
+      "wave": 2,
+      "hp": 28,
+      "kills": 58,
+      "done": true
+    },
+    {
+      "wave": 3,
+      "hp": 28,
+      "kills": 96,
+      "done": true
+    },
+    {
+      "wave": 4,
+      "hp": 28,
+      "kills": 140,
+      "done": true
+    },
+    {
+      "wave": 5,
+      "hp": 28,
+      "kills": 210,
+      "done": true
+    },
+    {
+      "wave": 6,
+      "hp": 28,
+      "kills": 276,
+      "done": true
+    },
+    {
+      "wave": 7,
+      "hp": 28,
+      "kills": 348,
+      "done": true
+    },
+    {
+      "wave": 8,
+      "hp": 28,
+      "kills": 428,
+      "done": true
+    },
+    {
+      "wave": 9,
+      "hp": 28,
+      "kills": 512,
+      "done": true
+    },
+    {
+      "wave": 10,
+      "hp": 28,
+      "kills": 626,
+      "done": true
+    },
+    {
+      "wave": 11,
+      "hp": 28,
+      "kills": 724,
+      "done": true
+    },
+    {
+      "wave": 12,
+      "hp": 28,
+      "kills": 828,
+      "done": true
+    },
+    {
+      "wave": 13,
+      "hp": 28,
+      "kills": 940,
+      "done": true
+    },
+    {
+      "wave": 14,
+      "hp": 28,
+      "kills": 1058,
+      "done": true
+    },
+    {
+      "wave": 15,
+      "hp": 28,
+      "kills": 1204,
+      "done": true
+    },
+    {
+      "wave": 16,
+      "hp": 28,
+      "kills": 1336,
+      "done": true
+    },
+    {
+      "wave": 17,
+      "hp": 28,
+      "kills": 1474,
+      "done": true
+    },
+    {
+      "wave": 18,
+      "hp": 28,
+      "kills": 1618,
+      "done": true
+    },
+    {
+      "wave": 19,
+      "hp": 28,
+      "kills": 1768,
+      "done": true
+    },
+    {
+      "wave": 20,
+      "hp": 28,
+      "kills": 1950,
+      "done": true
+    }
+  ],
+  "offline": {
+    "frames": 3,
+    "error": 0,
+    "externalResources": 0
+  },
+  "renderer": "WebKit WebGL",
+  "passed": true
+}

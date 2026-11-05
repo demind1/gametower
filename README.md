@@ -1,25 +1,29 @@
-# NEON OUTBREAK 3D — REFINED 3.1
+# NEON OUTBREAK 3D — Graphics 4.0
 
-Full source code for the standalone 3D tower-defense game.
+Playable offline cyberpunk tower defense: 8 tower types, 20 waves and procedural WebGL geometry/audio. This release is a validated graphics iteration; see [GRAPHICS_OVERHAUL.md](GRAPHICS_OVERHAUL.md) for implementation details, limitations and evidence.
 
-## Files
+## Play
 
-- `index.html`: application markup and UI, linked to CSS and JS.
-- `css/styles.css`: responsive interface, sidebar, fullscreen layout.
-- `js/game.js`: complete game logic, procedural geometry, WebGL rendering, GLSL shaders, audio synthesis, interactions, enemy waves and upgrades.
-- `standalone-original.html`: verified all-in-one original version from this conversation.
+Open `index.html` in a current Chromium browser with hardware acceleration enabled. No installation, CDN or network access is needed. If local-file policy blocks it, run:
 
-## Run
+```sh
+cd /workspace/gametower
+python3 -m http.server 8000 --bind 127.0.0.1
+```
 
-Open `index.html` in a current Chromium-based browser, preferably Chrome or Opera, with hardware acceleration enabled. It uses built-in WebGL and Web Audio APIs. No npm installation, internet connection, CDN, or external library is required. Alternatively open `standalone-original.html`.
+Use a local browser to access the server. A generated all-in-one version is `dist/NEON_OUTBREAK_4_OFFLINE.html`. The original 3.1 version is kept in `standalone-original.html`.
 
-## Development
+Click an arsenal item and a free map cell to build. Click a tower to select, upgrade, modify, change targeting or sell. Drag to orbit, wheel to zoom, `◎` to inspect the selected tower, `⌂` to return. `1–8` select towers, Space starts a wave, `Q/W/E/R` trigger abilities, `U` upgrades, `F` toggles fullscreen, Esc cancels selection. Keep sound/music enabled or toggle them independently in the panel. Audio starts after a user gesture.
 
-The original project is a monolithic custom WebGL 1 renderer. For substantial rendering upgrades, refactor incrementally into distinct modules (gameplay state, geometry, materials, shaders, render passes, effects, interface, audio) without changing game behavior. Keep a working build at each step; only target WebGL 2 if you implement a graceful WebGL 1 fallback or test supported target browsers.
+Graphics presets: Performance / Balanced / High / Ultra / Cinematic. Start with Performance on software GPUs. FPS, CPU render wall time and draw calls appear in the viewport; 144 FPS is a cap option, not a guarantee.
 
-Useful regression checklist: choose a tower, place it, upgrade damage/rate/critical/appearance, sell it, launch waves, test different enemy types and boss, activate EMP/orbital/overdrive, use fullscreen, switch quality, check offline mode.
+## Build and test
 
-## Notes
+```sh
+python3 tools/build.py
+node tests/browser.cjs
+```
 
-- Texture resolution and visual quality depend on generated materials and rendering resolution; 144 FPS is a target, not a guarantee.
-- No proprietary assets from Cyberpunk 2077 or FL Studio are included.
+Build uses only Python standard library. Tests require Node, Playwright and Chromium (`CHROMIUM_PATH` optional), already present in this managed environment. The application itself has no dependencies. Rebuild after editing CSS, HTML, JS or documentation; rebuild after tests to include current screenshots/results in the ZIP. Tests use temporary local hosting and an injected testing bridge; production code has no test cheats.
+
+Source layout: `index.html`, `css/styles.css`, `js/game.js`. Current renderer is native WebGL 1, with cached procedural meshes, static city batches, normal/roughness maps, GGX material lighting, packed directional shadows, restrained planar reflections, particle batching and postprocessing. All added assets are original procedural code; no proprietary game resources are included.

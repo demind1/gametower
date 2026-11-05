@@ -9,6 +9,7 @@ const path=[];function addLine(x,y,X,Y){const sx=Math.sign(X-x),sy=Math.sign(Y-y
 addLine(0,3,4,3);addLine(4,3,4,7);addLine(4,7,9,7);addLine(9,7,9,3);addLine(9,3,14,3);addLine(14,3,14,9);addLine(14,9,18,9);addLine(18,9,18,5);addLine(18,5,19,5);
 const pathSet=new Set(path.map(p=>p.join(','))),route=[{x:w(0,3).x-2*T,z:w(0,3).z},...path.map(([c,r])=>w(c,r)),{x:w(19,5).x+T*2,z:w(19,5).z}];
 let money,hp,wave,kills,towers,zombies,bullets,particles,beams,explosions,selected,build,ability,hover,active,paused,over,spawnLeft,spawnCount,total,spawnClock,speed,emp,boost,difficulty,uid,elapsed,shake,hudClock,msgClock,frameId=0;
+let corpses=[];
 let sounds=true,audioContext,lastBeep=-100;
 function tone(freq=420,len=.05,type='triangle',gain=.008){if(!sounds)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!audioContext)audioContext=new AC();if(audioContext.state==='suspended')audioContext.resume();const o=audioContext.createOscillator(),g=audioContext.createGain(),now=audioContext.currentTime;o.type=type;o.frequency.setValueAtTime(freq,now);o.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.56),now+len);g.gain.setValueAtTime(gain,now);g.gain.exponentialRampToValueAtTime(.0001,now+len);o.connect(g);g.connect(audioContext.destination);o.start(now);o.stop(now+len+.01)}catch(e){}}
 
@@ -63,7 +64,7 @@ function modify(k){const t=selected;if(!t||over||!towers.includes(t)||!MODS.incl
 function critChance(t){return .06+mods(t).crit*.075}
 function critPower(t){return 1.65+mods(t).crit*.21}
 function lvCost(t){return Math.round(DEF[t.type].cost*.62+t.level*76)}function range(t){return T*(DEF[t.type].range+(t.level-1)*.28)}function dmg(t){return DEF[t.type].dmg*(1+.56*(t.level-1))*(1+mods(t).damage*.22)}function income(t){const m=mods(t),base=DEF.bank.income*(1+(t.level-1)*.7)*(1+.22*m.damage+.16*m.rate);return Math.round(base)}
-function reset(){money=580;hp=28;wave=0;kills=0;towers=[];zombies=[];bullets=[];particles=[];beams=[];explosions=[];selected=null;build='gun';ability=null;hover=null;active=false;paused=false;over=false;spawnLeft=0;spawnCount=0;total=0;spawnClock=0;speed=1;emp=0;boost=0;difficulty=1;uid=0;elapsed=0;shake=0;hudClock=0;msgClock=0;$('#n-end').style.display='none';$('#n-progress').style.width='0%';$('#n-difficulty').value='1';$('#n-difficulty').disabled=false;toast('3D-ПРОТОКОЛ АКТИВЕН · УДЕРЖИ СЕКТОР 09',4);hud()}
+function reset(){corpses=[];inspecting=false;money=580;hp=28;wave=0;kills=0;towers=[];zombies=[];bullets=[];particles=[];beams=[];explosions=[];selected=null;build='gun';ability=null;hover=null;active=false;paused=false;over=false;spawnLeft=0;spawnCount=0;total=0;spawnClock=0;speed=1;emp=0;boost=0;difficulty=1;uid=0;elapsed=0;shake=0;hudClock=0;msgClock=0;$('#n-end').style.display='none';$('#n-progress').style.width='0%';$('#n-difficulty').value='1';$('#n-difficulty').disabled=false;toast('3D-ПРОТОКОЛ АКТИВЕН · УДЕРЖИ СЕКТОР 09',4);hud()}
 function hud(){
 $('#n-cash').textContent=Math.floor(money);$('#n-hp').textContent=hp;$('#n-wave').textContent=wave+'/20';$('#n-kills').textContent=kills;
 $('#n-start').disabled=active||over||paused||wave>=MAX;$('#n-start').textContent=active?'☣ ИДЁТ ВОЛНА '+wave:'▶ ЗАПУСТИТЬ ВОЛНУ '+(wave+1);
@@ -89,7 +90,7 @@ function orbital(x,z){if(money<150||over)return;money-=150;ability=null;selected
 function makeType(i,n){if(wave%5===0&&i===n-1)return'boss';if(wave>=9&&i%12===9)return'bulwark';if(wave>=7&&i%11===6)return'reaper';if(wave>=5&&i%10===3)return'regen';if(wave>=8&&i%13===9)return'brute';if(wave>=6&&i%10===7)return'splitter';if(wave>=4&&i%8===4)return'armor';if(wave>=3&&i%7===3)return'shadow';if(wave>=2&&i%4===2)return'runner';return'walker'}
 function spawn(type,x=route[0].x,z=route[0].z,segment=1){const sc=1.22+.26*(wave-1)+.013*(wave-1)*(wave-1),st={walker:[72,1.10,.7,14],runner:[48,2.1,.57,12],armor:[215,.8,.86,29],shadow:[84,1.72,.62,21],splitter:[145,1.24,.74,26],brute:[440,.73,1.07,52],bulwark:[660,.66,1.14,60],reaper:[130,2.30,.74,25],regen:[310,1.03,.80,35],boss:[1300+wave*255,.61,1.45,240],mini:[32,2.15,.43,7]}[type],health=st[0]*sc*difficulty;zombies.push({id:++uid,type,x,z,seg:segment,hp:health,max:health,v:st[1]+(type==='boss'?0:wave*.023),scale:st[2],reward:st[3],age:Math.random()*2,angle:0,slow:0,burn:0,dead:false});if(type==='boss')synthEffect('boss',x,z,true);}
 function start(){if(over||active||paused||wave>=MAX)return;wave++;active=true;difficulty=Number($('#n-difficulty').value)||1;$('#n-difficulty').disabled=true;total=20+wave*6+(wave%5===0?20:0);spawnLeft=total;spawnCount=0;spawnClock=.25;toast(wave%5===0?'⚠ БОСС И ОРДА · ВОЛНА '+wave:'☣ ВОЛНА '+wave+' · '+total+' ЗАРАЖЁННЫХ',3.3);tone(175,.3,'sawtooth',.028);synthEffect('siren',0,0,true);hud()}
-function kill(e){if(e.dead)return;e.dead=true;kills++;money+=e.reward;burst(e.x,e.z,e.type==='boss'?'#ff929a':'#a9d4b8',e.type==='boss'?54:12,e.type==='boss'?8:3,e.scale*1.3);if(e.type==='boss'){shake=.27;tone(125,.3,'sawtooth',.035)}zombieVoice(e,true);if(e.type==='splitter')for(let i=0;i<2;i++)spawn('mini',e.x+(i?.3:-.3),e.z+(i?-.2:.2),e.seg)}
+function kill(e){if(e.dead)return;e.dead=true;corpses.push({...e,ttl:.65});if(corpses.length>24)corpses.shift();kills++;money+=e.reward;burst(e.x,e.z,e.type==='boss'?'#ff929a':'#a9d4b8',e.type==='boss'?54:12,e.type==='boss'?8:3,e.scale*1.3);if(e.type==='boss'){shake=.27;tone(125,.3,'sawtooth',.035)}zombieVoice(e,true);if(e.type==='splitter')for(let i=0;i<2;i++)spawn('mini',e.x+(i?.3:-.3),e.z+(i?-.2:.2),e.seg)}
 function hit(e,amount,pierce=false,slow=0,burn=0){if(e.dead)return;e.hurt=.18;e.hp-=amount*(((e.type==='armor'||e.type==='bulwark')&&!pierce)?(e.type==='bulwark'?.42:.57):1);e.slow=Math.max(e.slow,slow);e.burn=Math.max(e.burn,burn);if(e.hp<=0)kill(e)}
 function target(t){let best=null,score=-Infinity;for(const e of zombies){if(e.dead)continue;let di=Math.hypot(e.x-t.x,e.z-t.z);if(di>range(t))continue;let k=t.priority==='strong'?e.hp:t.priority==='near'?-di:e.seg*1000-di;if(k>score){score=k;best=e}}return best}
 function shoot(t,e){const d=DEF[t.type];t.aim=Math.atan2(e.x-t.x,e.z-t.z);t.cool=d.rate/(1+.14*(t.level-1))/(1+mods(t).rate*.17)/(boost>0?1.6:1);t.flash=.1;const crit=Math.random()<critChance(t),shotDamage=dmg(t)*(crit?critPower(t):1);
@@ -98,7 +99,7 @@ else{bullets.push({x:t.x,y:1.52,z:t.z,tx:e.x,ty:.95*e.scale+0.2,tz:e.z,target:e,
 synthEffect(t.type,t.x,t.z)
 }
 function finish(win){over=true;active=false;paused=false;$('#n-end').style.display='flex';$('#n-emblem').textContent=win?'🏆':'☠';$('#n-endtitle').textContent=win?'СЕКТОР ОЧИЩЕН':'ОБОРОНА ПАЛА';$('#n-endtitle').style.color=win?'#c3f6ff':'#ffa3a2';$('#n-endinfo').textContent=win?'Ты пережил 20 волн и уничтожил '+kills+' заражённых. Периметр удержан.':'База уничтожена на волне '+wave+'. Убито '+kills+' мутантов. Перестрой оборону и попробуй снова.';tone(win?800:125,.4,win?'triangle':'sawtooth',.045);hud()}
-function step(dt){elapsed+=dt;if(msgClock>0){msgClock-=dt;if(msgClock<=0)$('#n-toast').style.opacity='0'}shake=Math.max(0,shake-dt);if(paused||over)return;emp=Math.max(0,emp-dt);boost=Math.max(0,boost-dt);
+function step(dt){if(!paused){for(const body of corpses)body.ttl-=dt;corpses=corpses.filter(body=>body.ttl>0)}elapsed+=dt;if(msgClock>0){msgClock-=dt;if(msgClock<=0)$('#n-toast').style.opacity='0'}shake=Math.max(0,shake-dt);if(paused||over)return;emp=Math.max(0,emp-dt);boost=Math.max(0,boost-dt);
 if(active&&spawnLeft){spawnClock-=dt;while(spawnClock<=0&&spawnLeft){spawn(makeType(spawnCount,total));spawnLeft--;spawnCount++;spawnClock+=Math.max(.16,.46-wave*.010)}}
 for(const e of zombies){if(e.dead)continue;e.hurt=Math.max(0,(e.hurt||0)-dt);e.age+=dt;e.slow=Math.max(0,e.slow-dt);if(active&&Math.random()<dt*.085)zombieVoice(e);if(e.type==='regen')e.hp=Math.min(e.max,e.hp+dt*e.max*.011);if(e.burn>0){e.burn=Math.max(0,e.burn-dt);e.hp-=28*dt;if(e.hp<=0){kill(e);continue}}let travel=dt*e.v*(emp>0?.065:e.slow>0?.43:1),guard=0;while(travel>0&&e.seg<route.length&&guard++<35){const p=route[e.seg],dx=p.x-e.x,dz=p.z-e.z,d=Math.hypot(dx,dz);if(d<.00001){e.seg++;continue}e.angle=Math.atan2(dx,dz);if(travel>=d){e.x=p.x;e.z=p.z;e.seg++;travel-=d}else{e.x+=dx/d*travel;e.z+=dz/d*travel;travel=0}}if(e.seg>=route.length){e.dead=true;hp=Math.max(0,hp-(e.type==='boss'?5:e.type==='bulwark'?3:e.type==='reaper'?2:e.type==='brute'?2:1));const base=w(19,5);burst(base.x,base.z,'#ff8c91',20,4,1.5);shake=.18;tone(110,.15,'sawtooth',.025);if(hp<=0){finish(false);break}}}
 if(!over){for(const t of towers){if(t.type==='bank')continue;t.cool-=dt;t.flash=Math.max(0,t.flash-dt);if(t.cool<=0){const e=target(t);if(e)shoot(t,e);else t.cool=0}}
@@ -115,8 +116,8 @@ varying vec3 vN; varying vec3 vWorld; varying float vDist;
 void main(){vec4 w=uM*vec4(aPos,1.0);gl_Position=uVP*w;vWorld=w.xyz;vN=normalize(uNormal*aNorm);vShadow=uLightVP*w;vDist=gl_Position.w;}`;
 const FS=`
 precision highp float;
-uniform vec4 uColor;uniform float uGlow,uMat,uTime,uClipBelow,uReflectionOn;
-uniform vec3 uEye;uniform sampler2D uDetailTex,uSurfaceTex,uReflectionTex,uShadowTex;
+uniform vec4 uColor;uniform float uGlow,uMat,uTime,uClipBelow,uReflectionOn,uDirect;
+uniform vec3 uEye;uniform vec4 uFlash;uniform sampler2D uDetailTex,uSurfaceTex,uReflectionTex,uShadowTex;
 uniform mat4 uReflectionVP;uniform float uShadowPass,uShadowOn;uniform vec2 uShadowTexel;
 varying vec3 vN,vWorld;varying float vDist;varying vec4 vShadow;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -168,12 +169,14 @@ void main(){
  ref+=(texture2D(uReflectionTex,ru+spread).rgb+texture2D(uReflectionTex,ru-spread).rgb)*.3;
  float fresnel=.04+.96*pow(1.-nv,5.);float weight=clamp((.07+.58*puddle)*fresnel*(1.-rough),0.,.32);
  rgb=mix(rgb,ref,weight);}}
+ vec3 toFlash=uFlash.xyz-vWorld;float fd=max(dot(toFlash,toFlash),.2);rgb+=albedo*vec3(1.,.66,.30)*max(dot(n,normalize(toFlash)),0.)*uFlash.w/(1.+fd*2.);
  float fog=clamp((vDist-38.)/110.,0.,.40);rgb=mix(rgb,vec3(.018,.027,.038),fog);
+ if(uDirect>.5)rgb=pow(clamp((rgb*1.12*(2.51*rgb*1.12+.03))/(rgb*1.12*(2.43*rgb*1.12+.59)+.14),0.,1.),vec3(1./2.2));
  gl_FragColor=vec4(rgb,uColor.a);
 }`;
 function compile(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s}
 const program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,VS));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,FS));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);
-const loc={normal:gl.getUniformLocation(program,'uNormal'),eye:gl.getUniformLocation(program,'uEye'),surface:gl.getUniformLocation(program,'uSurfaceTex'),lightVP:gl.getUniformLocation(program,'uLightVP'),shadowPass:gl.getUniformLocation(program,'uShadowPass'),shadowOn:gl.getUniformLocation(program,'uShadowOn'),shadowTex:gl.getUniformLocation(program,'uShadowTex'),shadowTexel:gl.getUniformLocation(program,'uShadowTexel'),p:gl.getAttribLocation(program,'aPos'),n:gl.getAttribLocation(program,'aNorm'),vp:gl.getUniformLocation(program,'uVP'),m:gl.getUniformLocation(program,'uM'),color:gl.getUniformLocation(program,'uColor'),glow:gl.getUniformLocation(program,'uGlow'),mat:gl.getUniformLocation(program,'uMat'),time:gl.getUniformLocation(program,'uTime'),clip:gl.getUniformLocation(program,'uClipBelow'),reflOn:gl.getUniformLocation(program,'uReflectionOn'),reflVP:gl.getUniformLocation(program,'uReflectionVP'),reflTex:gl.getUniformLocation(program,'uReflectionTex'),detailTex:gl.getUniformLocation(program,'uDetailTex')};
+const loc={direct:gl.getUniformLocation(program,'uDirect'),flash:gl.getUniformLocation(program,'uFlash'),normal:gl.getUniformLocation(program,'uNormal'),eye:gl.getUniformLocation(program,'uEye'),surface:gl.getUniformLocation(program,'uSurfaceTex'),lightVP:gl.getUniformLocation(program,'uLightVP'),shadowPass:gl.getUniformLocation(program,'uShadowPass'),shadowOn:gl.getUniformLocation(program,'uShadowOn'),shadowTex:gl.getUniformLocation(program,'uShadowTex'),shadowTexel:gl.getUniformLocation(program,'uShadowTexel'),p:gl.getAttribLocation(program,'aPos'),n:gl.getAttribLocation(program,'aNorm'),vp:gl.getUniformLocation(program,'uVP'),m:gl.getUniformLocation(program,'uM'),color:gl.getUniformLocation(program,'uColor'),glow:gl.getUniformLocation(program,'uGlow'),mat:gl.getUniformLocation(program,'uMat'),time:gl.getUniformLocation(program,'uTime'),clip:gl.getUniformLocation(program,'uClipBelow'),reflOn:gl.getUniformLocation(program,'uReflectionOn'),reflVP:gl.getUniformLocation(program,'uReflectionVP'),reflTex:gl.getUniformLocation(program,'uReflectionTex'),detailTex:gl.getUniformLocation(program,'uDetailTex')};
 
 // Procedural 1024×1024 material detail texture: fine scratches, concrete grit and worn paint.
 // Deterministically generated once, then mipmapped and anisotropically filtered on GPU.
@@ -224,11 +227,11 @@ const identity=()=>[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 function mult(a,b){const o=new Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s}return o}
 function perspective(fov,aspect,near,far){const f=1/Math.tan(fov/2);return[f/aspect,0,0,0,0,f,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0]}
 function sub(a,b){return[a[0]-b[0],a[1]-b[1],a[2]-b[2]]}function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]}function cross(a,b){return[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}function norm(a){const l=Math.hypot(...a)||1;return a.map(v=>v/l)}
-let yaw=-.68,pitch=1.09,zoom=55,smoothYaw=yaw,smoothPitch=pitch,smoothZoom=zoom,cameraMoving=false,camBasis=null,vp=identity();
-function camera(reflected=false){const eye=[Math.sin(smoothYaw)*Math.cos(smoothPitch)*smoothZoom,(reflected?-1:1)*Math.sin(smoothPitch)*smoothZoom,Math.cos(smoothYaw)*Math.cos(smoothPitch)*smoothZoom],back=norm([eye[0],eye[1]+2.25,eye[2]]),right=norm(cross([0,1,0],back)),up=cross(back,right),v=[right[0],up[0],back[0],0,right[1],up[1],back[1],0,right[2],up[2],back[2],0,-dot(right,eye),-dot(up,eye),-dot(back,eye),1],aspect=canvas.width/canvas.height;vp=mult(perspective(PI/4.2,aspect,.1,125),v);if(!reflected)camBasis={eye,right,up,forward:back.map(n=>-n),aspect};gl.uniform3fv(loc.eye,eye);gl.uniformMatrix4fv(loc.vp,false,new Float32Array(vp))}
+let yaw=-.68,pitch=1.09,zoom=55,smoothYaw=yaw,smoothPitch=pitch,smoothZoom=zoom,cameraMoving=false,inspecting=false,focusX=0,focusZ=0,camBasis=null,vp=identity();
+function camera(reflected=false){const eye=[focusX+Math.sin(smoothYaw)*Math.cos(smoothPitch)*smoothZoom,(reflected?-1:1)*Math.sin(smoothPitch)*smoothZoom,focusZ+Math.cos(smoothYaw)*Math.cos(smoothPitch)*smoothZoom],back=norm([eye[0]-focusX,eye[1]-(reflected?-1:1)*(inspecting?.8:-2.25),eye[2]-focusZ]),right=norm(cross([0,1,0],back)),up=cross(back,right),v=[right[0],up[0],back[0],0,right[1],up[1],back[1],0,right[2],up[2],back[2],0,-dot(right,eye),-dot(up,eye),-dot(back,eye),1],aspect=canvas.width/canvas.height;vp=mult(perspective(PI/4.2,aspect,.1,125),v);if(!reflected)camBasis={eye,right,up,forward:back.map(n=>-n),aspect};gl.uniform3fv(loc.eye,eye);gl.uniformMatrix4fv(loc.vp,false,new Float32Array(vp))}
 function model(x,y,z,sx=1,sy=1,sz=1,rot=0){const c=Math.cos(rot),s=Math.sin(rot);return[c*sx,0,-s*sx,0,0,sy,0,0,s*sz,0,c*sz,0,x,y,z,1]}
 function beamModel(a,b,width){let d=sub([b.x,b.y,b.z],[a.x,a.y,a.z]),len=Math.hypot(...d);if(len<.0001)len=.001;let yy=d.map(x=>x/len),xx=norm(cross(Math.abs(yy[1])>.9?[0,0,1]:[0,1,0],yy)),zz=cross(yy,xx);return[xx[0]*width,xx[1]*width,xx[2]*width,0,yy[0]*len,yy[1]*len,yy[2]*len,0,zz[0]*width,zz[1]*width,zz[2]*width,0,(a.x+b.x)/2,(a.y+b.y)/2,(a.z+b.z)/2,1]}
-let lastMesh=null,lastColor=null,staticCapture=null;function draw(name,x,y,z,sx,sy,sz,col,rot=0,glow=0,alpha=1,mat=0){if(staticCapture){staticCapture.push({name,x,y,z,sx,sy,sz,col,rot,glow,alpha,mat});return}const m=meshes[name];if(m!==lastMesh){gl.bindBuffer(gl.ARRAY_BUFFER,m.v);gl.vertexAttribPointer(loc.p,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.n);gl.vertexAttribPointer(loc.n,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.i);lastMesh=m}setModel(model(x,y,z,sx,sy,sz,rot));const c=Array.isArray(col)?col:hex(col);gl.uniform4f(loc.color,c[0],c[1],c[2],alpha);gl.uniform1f(loc.glow,glow*.55);gl.uniform1f(loc.mat,mat||3);drawCalls++;gl.drawElements(gl.TRIANGLES,m.count,gl.UNSIGNED_SHORT,0)}
+let lastMesh=null,lastColor=null,staticCapture=null;function draw(name,x,y,z,sx,sy,sz,col,rot=0,glow=0,alpha=1,mat=0){if(staticCapture){staticCapture.push({name,x,y,z,sx,sy,sz,col,rot,glow,alpha,mat});return}const m=meshes[name];if(m!==lastMesh){gl.bindBuffer(gl.ARRAY_BUFFER,m.v);gl.vertexAttribPointer(loc.p,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.n);gl.vertexAttribPointer(loc.n,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.i);lastMesh=m}setModel(model(x,y,z,sx,sy,sz,rot));const c=Array.isArray(col)?col:hex(col);gl.uniform4f(loc.color,c[0],c[1],c[2],alpha);gl.uniform1f(loc.glow,glow*.55);gl.uniform1f(loc.mat,mat);drawCalls++;gl.drawElements(gl.TRIANGLES,m.count,gl.UNSIGNED_SHORT,0)}
 function line3(a,b,width,col,glow=0,mat=3){const m=meshes.cyl;if(m!==lastMesh){gl.bindBuffer(gl.ARRAY_BUFFER,m.v);gl.vertexAttribPointer(loc.p,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.n);gl.vertexAttribPointer(loc.n,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.i);lastMesh=m}setModel(beamModel(a,b,width));const c=hex(col);gl.uniform4f(loc.color,c[0],c[1],c[2],1);gl.uniform1f(loc.glow,glow*.55);gl.uniform1f(loc.mat,mat);drawCalls++;gl.drawElements(gl.TRIANGLES,m.count,gl.UNSIGNED_SHORT,0)}
 function noise(n){const v=Math.sin(n*133.61+37.13)*43758.5;return v-Math.floor(v)}
 const structures=[],smallProps=[];
@@ -363,8 +366,10 @@ function renderCity(){
  const col=hex(batch.col);gl.uniform4f(loc.color,col[0],col[1],col[2],batch.alpha);gl.uniform1f(loc.glow,batch.glow*.55);gl.uniform1f(loc.mat,batch.mat||1);drawCalls++;gl.drawElements(gl.TRIANGLES,m.count,gl.UNSIGNED_SHORT,0);
  }
 }
+let renderPass='main';
 function tower3d(t){
- const accent=DEF[t.type].color,a=t.aim,c=Math.cos(a),sn=Math.sin(a),hi=graphicMode!=='speed',rank=t.level-1,skin=mods(t).skin;
+ if(renderPass==='shadow'){draw('housing',t.x,.5,t.z,1.4,1,1.4,'#202832');draw('housing',t.x,1.3,t.z,.85,.65,.85,'#202832');if(t.type!=='bank'&&t.type!=='arc')line3({x:t.x,y:1.3,z:t.z},{x:t.x+Math.sin(t.aim)*1.65,y:1.3,z:t.z+Math.cos(t.aim)*1.65},.25,'#202832');return;}
+ const accent=DEF[t.type].color,a=t.aim,c=Math.cos(a),sn=Math.sin(a),hi=graphicMode!=='speed'&&renderPass==='main'&&(smoothZoom<45||graphicMode==='ultra'||graphicMode==='cinematic'),rank=t.level-1,skin=mods(t).skin;
  const pt=(x,y,z)=>({x:t.x+c*x+sn*z,y,z:t.z-sn*x+c*z});
  const part=(m,x,y,z,sx,sy,sz,col,glow=0,mat=0,rot=a)=>{const p=pt(x,y,z);draw(m,p.x,p.y,p.z,sx,sy,sz,col,rot,glow,1,mat)};
  const pipe=(from,to,w,col='#617783',glow=0,mat=3)=>line3(pt(...from),pt(...to),w,col,glow,mat);
@@ -412,7 +417,8 @@ function tower3d(t){
 }
 function bindMesh(m){if(m===lastMesh)return;gl.bindBuffer(gl.ARRAY_BUFFER,m.v);gl.vertexAttribPointer(loc.p,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.n);gl.vertexAttribPointer(loc.n,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.i);lastMesh=m;}
 function zombie3d(e){
- const s=e.scale,rot=e.angle,hi=graphicMode!=='speed'&&zombies.length<55,boss=e.type==='boss',armored=e.type==='armor'||e.type==='bulwark',fast=e.type==='runner'||e.type==='mini'||e.type==='reaper',heavy=boss||e.type==='brute'||e.type==='bulwark';
+ if(renderPass==='shadow'){draw('lowSphere',e.x,.8*e.scale,e.z,.7*e.scale,1.5*e.scale,.55*e.scale,'#202832');draw('lowSphere',e.x,1.6*e.scale,e.z,.45*e.scale,.45*e.scale,.45*e.scale,'#202832');return;}
+ const s=e.scale,rot=e.angle,hi=graphicMode!=='speed'&&renderPass==='main'&&zombies.length<55&&smoothZoom<45,boss=e.type==='boss',armored=e.type==='armor'||e.type==='bulwark',fast=e.type==='runner'||e.type==='mini'||e.type==='reaper',heavy=boss||e.type==='brute'||e.type==='bulwark';
  const skin=({boss:'#a87578',shadow:'#68778d',runner:'#9ba891',splitter:'#a08094',regen:'#88ac9c'})[e.type]||'#8e9e91',suit=armored?'#536575':boss?'#57323f':'#35433f';
  const phase=e.age*(fast?15:heavy?5.5:8.6)+e.id,walk=Math.sin(phase),bob=Math.abs(Math.cos(phase))*(heavy?.035:.055),lean=(fast?.20:heavy?.06:.09)-(e.hurt||0)*.8;
  const pt=(x,y,z)=>({x:e.x+(Math.cos(rot)*x+Math.sin(rot)*z)*s,y:(y+bob)*s,z:e.z+(-Math.sin(rot)*x+Math.cos(rot)*z)*s});
@@ -501,26 +507,44 @@ function postProcess(){
  gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,mirrorTarget.tex);gl.uniform1i(loc.reflTex,0);
 }
 
+const particleProgram=gl.createProgram();
+gl.attachShader(particleProgram,compile(gl.VERTEX_SHADER,`attribute vec3 aPosition;attribute vec3 aColor;attribute float aSize;uniform mat4 uVP;uniform float uPixels;varying vec3 vColor;void main(){gl_Position=uVP*vec4(aPosition,1.);gl_PointSize=clamp(aSize*uPixels/max(.1,gl_Position.w),1.,48.);vColor=aColor;}`));
+gl.attachShader(particleProgram,compile(gl.FRAGMENT_SHADER,`precision mediump float;varying vec3 vColor;void main(){float d=length(gl_PointCoord-.5)*2.;if(d>1.)discard;gl_FragColor=vec4(pow(vColor,vec3(2.2))*.9,(1.-smoothstep(.25,1.,d))*.85);}`));
+gl.linkProgram(particleProgram);if(!gl.getProgramParameter(particleProgram,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(particleProgram));
+const particleLoc={p:gl.getAttribLocation(particleProgram,'aPosition'),c:gl.getAttribLocation(particleProgram,'aColor'),s:gl.getAttribLocation(particleProgram,'aSize'),vp:gl.getUniformLocation(particleProgram,'uVP'),px:gl.getUniformLocation(particleProgram,'uPixels')},particleData=new Float32Array(550*7),particleBuffer=gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,particleBuffer);gl.bufferData(gl.ARRAY_BUFFER,particleData.byteLength,gl.DYNAMIC_DRAW);
+function renderParticles(){
+ if(!particles.length)return;const count=Math.min(550,particles.length);
+ for(let i=0;i<count;i++){const p=particles[i],col=hex(p.col),o=i*7;particleData[o]=p.x;particleData[o+1]=p.y;particleData[o+2]=p.z;particleData[o+3]=col[0];particleData[o+4]=col[1];particleData[o+5]=col[2];particleData[o+6]=p.size;}
+ gl.useProgram(particleProgram);gl.bindBuffer(gl.ARRAY_BUFFER,particleBuffer);gl.bufferSubData(gl.ARRAY_BUFFER,0,particleData.subarray(0,count*7));
+ for(const [loc,n,offset] of [[particleLoc.p,3,0],[particleLoc.c,3,12],[particleLoc.s,1,24]]){gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,n,gl.FLOAT,false,28,offset);}
+ gl.uniformMatrix4fv(particleLoc.vp,false,vp);gl.uniform1f(particleLoc.px,canvas.height*1.3);gl.depthMask(false);drawCalls++;gl.drawArrays(gl.POINTS,0,count);gl.depthMask(true);
+ for(const loc of [particleLoc.p,particleLoc.c,particleLoc.s])gl.disableVertexAttribArray(loc);
+ gl.useProgram(program);gl.enableVertexAttribArray(loc.p);gl.enableVertexAttribArray(loc.n);lastMesh=null;
+}
 let shadowTarget=null,shadowSize=0,shadowFrame=0;
 function renderShadows(){
  if(graphicMode==='speed'){gl.uniform1f(loc.shadowOn,0);return;}
  const size=(graphicMode==='ultra'||graphicMode==='cinematic')?2048:1024;
  if(size===shadowSize&&shadowTarget&&performance.now()-shadowFrame<(towers.length||zombies.length?33:1000))return;shadowFrame=performance.now();
  if(size!==shadowSize){freeTarget(shadowTarget);shadowTarget=makeTarget(size,size,true);shadowSize=size;}
+ gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,null);
  gl.activeTexture(gl.TEXTURE3);gl.bindTexture(gl.TEXTURE_2D,null);
  gl.bindFramebuffer(gl.FRAMEBUFFER,shadowTarget.fbo);gl.viewport(0,0,size,size);gl.clearColor(1,1,1,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
  const eye=[-26,43,15],back=norm(eye),right=norm(cross([0,1,0],back)),up=cross(back,right);
  const view=[... [right[0],up[0],back[0],0],right[1],up[1],back[1],0,right[2],up[2],back[2],0,-dot(right,eye),-dot(up,eye),-dot(back,eye),1];
  const ortho=[1/26,0,0,0,0,1/26,0,0,0,0,-2/100,0,0,0,-1,1],light=mult(ortho,view);
  gl.uniformMatrix4fv(loc.lightVP,false,light);gl.uniformMatrix4fv(loc.vp,false,light);gl.uniform1f(loc.clip,-100);gl.uniform1f(loc.shadowPass,1);gl.uniform1f(loc.shadowOn,0);gl.uniform1f(loc.reflOn,0);gl.disable(gl.BLEND);lastMesh=null;
- renderCity();for(const t of towers)tower3d(t);for(const e of zombies)zombie3d(e);
+ renderCity();renderPass='shadow';for(const t of towers)tower3d(t);for(const e of zombies)zombie3d(e);renderPass='main';
  gl.enable(gl.BLEND);gl.uniform1f(loc.shadowPass,0);gl.uniform1f(loc.shadowOn,1);gl.uniform2f(loc.shadowTexel,1/size,1/size);gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.bindTexture(gl.TEXTURE_2D,shadowTarget.tex);gl.uniform1i(loc.shadowTex,3);gl.activeTexture(gl.TEXTURE0);
 }
 let drawCalls=0,frameMS=0;
 function render(){
  const frameStart=performance.now();drawCalls=0;
  resize();gl.useProgram(program);gl.uniform1f(loc.time,elapsed);
- const useFX=ensureTargets();gl.uniform1f(loc.shadowOn,graphicMode==='speed'?0:1);renderShadows();
+ const flashTower=towers.find(t=>t.flash>0);const blast=explosions.find(e=>e.ttl>.35);
+ if(blast)gl.uniform4f(loc.flash,blast.x,1.6,blast.z,Math.min(2,blast.ttl*4));else if(flashTower)gl.uniform4f(loc.flash,flashTower.x,1.5,flashTower.z,flashTower.flash*8);else gl.uniform4f(loc.flash,0,0,0,0);
+ const useFX=ensureTargets();gl.uniform1f(loc.direct,0);gl.uniform1f(loc.shadowOn,graphicMode==='speed'?0:1);renderShadows();
  if(useFX){
   // Mirrored viewpoint: actual scene geometry rendered into a reflection framebuffer.
   // Omit all geometry below .23m (ground/roads) to prevent self-reflection.
@@ -533,24 +557,24 @@ function render(){
    gl.bindFramebuffer(gl.FRAMEBUFFER,mirrorTarget.fbo);gl.viewport(0,0,mirrorTarget.w,mirrorTarget.h);
    gl.clearColor(.018,.024,.034,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
    camera(true);reflectionMatrix=vp.slice();gl.uniform1f(loc.clip,.23);gl.uniform1f(loc.reflOn,0.);lastMesh=null;
-   renderCity();for(const t of towers)tower3d(t);
-   if(zombies.length<28){for(const e of zombies)zombie3d(e)}
+   renderCity();renderPass='reflection';for(const t of towers)tower3d(t);
+   if(zombies.length<28){for(const e of zombies)zombie3d(e)}renderPass='main';
   }
   gl.bindFramebuffer(gl.FRAMEBUFFER,sceneTarget.fbo);gl.viewport(0,0,sceneTarget.w,sceneTarget.h);
  }else{gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,canvas.width,canvas.height)}
  gl.clearColor(.003,.006,.010,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
- camera(false);gl.uniform1f(loc.clip,-100.);gl.uniform1f(loc.reflOn,useFX?1.:0.);
+ camera(false);gl.uniform1f(loc.direct,useFX?0:1);gl.uniform1f(loc.clip,-100.);gl.uniform1f(loc.reflOn,useFX?1.:0.);
  gl.uniformMatrix4fv(loc.reflVP,false,new Float32Array(reflectionMatrix));
  if(useFX){gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,mirrorTarget.tex);gl.uniform1i(loc.reflTex,0)}
  lastMesh=null;
 renderCity();
 if(selected&&towers.includes(selected)){draw('hairline',selected.x,.13,selected.z,1.63,.048,1.63,'#a6d8e7',0,0,.52)}
 if(hover&&!over){if(ability==='bomb'){draw('ring',hover.x,.15,hover.z,T*4.9,.13,T*4.9,'#ffd1a3',0,1.8);draw('sphere',hover.x,.15,hover.z,.38,.13,.38,'#ffce9c',0,2)}else if(build&&hover.c>=0&&hover.c<COLS&&hover.r>=0&&hover.r<ROWS){let can=!pathSet.has(hover.c+','+hover.r)&&!towers.some(t=>t.c===hover.c&&t.r===hover.r)&&money>=DEF[build].cost;draw('box',w(hover.c,hover.r).x,.16,w(hover.c,hover.r).z,1.64,.1,1.64,can?'#7dc3d5':'#e37a81',0,1,.6);if(can&&DEF[build].range)draw('hairline',w(hover.c,hover.r).x,.18,w(hover.c,hover.r).z,DEF[build].range*T*2,.05,DEF[build].range*T*2,'#7cb8c7',0,0,.38)}}
-for(const t of towers)tower3d(t);for(const e of zombies)zombie3d(e);
+for(const t of towers)tower3d(t);for(const e of zombies)zombie3d(e);for(const body of corpses){const f=1-body.ttl/.65;draw('housing',body.x,.28*body.scale*(1-f),body.z,.65*body.scale,.4*body.scale*(1-f),1.3*body.scale,'#35433f',body.angle+f*.4,0,1-f,4);}
 for(const b of bullets){if(b.px!==undefined&&graphicMode!=='speed')line3({x:b.px,y:b.py,z:b.pz},{x:b.x,y:b.y,z:b.z},b.type==='rail'?.13:.09,b.critical?'#fff5cc':b.color,1.8);draw('sphere',b.x,b.y,b.z,b.type==='rail'?.24:.18,.17,.18,b.critical?'#fff5cf':b.color,0,2.7)}
 for(const beam of beams){line3(beam.a,beam.b,.07,beam.color,1.8)}
 for(const r of explosions){const f=1-r.ttl/r.total;draw('ring',r.x,.18,r.z,r.radius*2*f,.14,r.radius*2*f,r.color,0,2)}
-for(const p of particles){draw('sphere',p.x,p.y,p.z,p.size,p.size,p.size,p.col,0,1.3)}
+renderParticles();
 if(emp>0){draw('ring',0,.14,0,(COLS*T-1),.12,(ROWS*T-1),'#9eeeff',0,1.2)}
 if(useFX)postProcess();renderedFrames++;frameMS=performance.now()-frameStart;root.dataset.frameMs=frameMS.toFixed(2);root.dataset.drawCalls=drawCalls;root.dataset.frames=renderedFrames;
 }
@@ -561,9 +585,10 @@ canvas.addEventListener('pointerup',e=>{if(!down)return;let p=down;down=null;if(
 canvas.addEventListener('pointercancel',()=>{down=null});canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('pointerleave',()=>{if(!down)hover=null});canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(21,Math.min(69,zoom*Math.exp(e.deltaY*.0011)))},{passive:false});
 $('#n-full').onclick=async()=>{try{if(document.fullscreenElement===root)await document.exitFullscreen();else if(root.requestFullscreen)await root.requestFullscreen();else toast('ПОЛНОЭКРАННЫЙ РЕЖИМ НЕ ПОДДЕРЖИВАЕТСЯ')}catch(_){toast('БРАУЗЕР НЕ РАЗРЕШИЛ ПОЛНЫЙ ЭКРАН')}};
 document.addEventListener('fullscreenchange',()=>{$('#n-full').textContent=document.fullscreenElement===root?'⛶ Выйти':'⛶ Экран';resize()});
-$('#n-quality').onchange=e=>{graphicMode=e.target.value;reflectionEvery=PRESETS[graphicMode].every;postReady=false;resizeW=-1;toast('ГРАФИКА: '+e.target.options[e.target.selectedIndex].text)};
+$('#n-quality').onchange=e=>{graphicMode=e.target.value;reflectionEvery=PRESETS[graphicMode].every;postReady=false;renderedFrames=0;resizeW=-1;toast('ГРАФИКА: '+e.target.options[e.target.selectedIndex].text)};
 $('#n-fpscap').onchange=e=>{toast(e.target.value==='0'?'ОГРАНИЧЕНИЕ FPS СНЯТО':'ЦЕЛЬ: ДО '+e.target.value+' FPS · ЗАВИСИТ ОТ МОНИТОРА')};
-$('#n-left').onclick=()=>yaw-=.28;$('#n-right').onclick=()=>yaw+=.28;$('#n-in').onclick=()=>zoom=Math.max(21,zoom-5);$('#n-out').onclick=()=>zoom=Math.min(69,zoom+5);$('#n-camreset').onclick=()=>{yaw=-.68;pitch=1.09;zoom=55};
+$('#n-inspect').onclick=()=>{if(!selected){toast('ВЫБЕРИ БАШНЮ ДЛЯ ОСМОТРА');return}inspecting=!inspecting;zoom=inspecting?24:55;pitch=inspecting?.70:1.09;};
+$('#n-left').onclick=()=>yaw-=.28;$('#n-right').onclick=()=>yaw+=.28;$('#n-in').onclick=()=>zoom=Math.max(21,zoom-5);$('#n-out').onclick=()=>zoom=Math.min(69,zoom+5);$('#n-camreset').onclick=()=>{inspecting=false;yaw=-.68;pitch=1.09;zoom=55};
 root.querySelectorAll('.item').forEach(el=>el.onclick=()=>{choose(el.dataset.type);root.focus({preventScroll:true})});
 root.querySelectorAll('.mod').forEach(b=>b.onclick=()=>modify(b.dataset.mod));$('#n-up').onclick=upgrade;$('#n-sell').onclick=sell;$('#n-target').onclick=priority;
 $('#n-bomb').onclick=()=>{if(money<150||over)return;ability=ability==='bomb'?null:'bomb';selected=null;build=null;toast(ability?'ВЫБЕРИ МЕСТО ОРБИТАЛЬНОГО УДАРА':'ОРБИТАЛЬНЫЙ УДАР ОТМЕНЁН');hud()};
@@ -572,14 +597,14 @@ $('#n-pause').onclick=()=>{if(over)return;paused=!paused;hud();toast(paused?'Ⅱ
 $('#n-speed').onclick=()=>{speed=speed===1?2:speed===2?3:1;hud()};$('#n-sound').onclick=()=>{sounds=!sounds;$('#n-sound').textContent=sounds?'♪ ЗВУК':'♪ ВЫКЛ.';if(sounds){tone(690,.06);unlockMusic()}};$('#n-music').onclick=()=>{musicEnabled=!musicEnabled;$('#n-music').textContent=musicEnabled?'♫ МУЗЫКА':'♫ ВЫКЛ.';if(musicEnabled)unlockMusic()};
 root.addEventListener('pointerdown',unlockMusic,{once:true});$('#n-restart').onclick=reset;$('#n-difficulty').onchange=e=>{difficulty=Number(e.target.value);toast('УРОВЕНЬ УГРОЗЫ: '+e.target.options[e.target.selectedIndex].text)};
 root.addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;const type=Object.keys(DEF);if(/^[1-8]$/.test(e.key)){choose(type[+e.key-1]);e.preventDefault()}else if(e.key===' '){if(paused){paused=false;hud()}else start();e.preventDefault()}else if(e.key.toLowerCase()==='q'){$('#n-bomb').click();e.preventDefault()}else if(e.key.toLowerCase()==='w'){freeze();e.preventDefault()}else if(e.key.toLowerCase()==='e'){overdrive();e.preventDefault()}else if(e.key.toLowerCase()==='r'){repair();e.preventDefault()}else if(e.key.toLowerCase()==='u'){upgrade();e.preventDefault()}else if(e.key.toLowerCase()==='f'&&!e.repeat){$('#n-full').click();e.preventDefault()}else if(e.key==='Escape'){selected=null;build=null;ability=null;hud()}else if(e.key==='ArrowLeft'){yaw-=.15;e.preventDefault()}else if(e.key==='ArrowRight'){yaw+=.15;e.preventDefault()}});
-let last=0,lastRendered=0,fpsFrames=0,fpsStart=0,lag=0;gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.CULL_FACE);gl.enableVertexAttribArray(loc.p);gl.enableVertexAttribArray(loc.n);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+let intervals=[],last=0,lastRendered=0,fpsFrames=0,fpsStart=0,lag=0;gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.CULL_FACE);gl.enableVertexAttribArray(loc.p);gl.enableVertexAttribArray(loc.n);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
 function tick(ts){
- const delta=Math.min(.075,last?(ts-last)/1000:.016);last=ts;musicLoop();
- const ease=1-Math.exp(-delta*14);cameraMoving=Math.abs(yaw-smoothYaw)+Math.abs(pitch-smoothPitch)+Math.abs(zoom-smoothZoom)>.001;smoothYaw+=(yaw-smoothYaw)*ease;smoothPitch+=(pitch-smoothPitch)*ease;smoothZoom+=(zoom-smoothZoom)*ease;lag+=delta;
- const fixed=1/120;let count=0;while(lag>=fixed&&count<7){step(fixed*speed);lag-=fixed;count++}if(count>=7)lag=0;
+ const delta=Math.min(.25,last?(ts-last)/1000:.016);last=ts;musicLoop();
+ const ease=1-Math.exp(-delta*14);cameraMoving=Math.abs(yaw-smoothYaw)+Math.abs(pitch-smoothPitch)+Math.abs(zoom-smoothZoom)>.001;smoothYaw+=(yaw-smoothYaw)*ease;smoothPitch+=(pitch-smoothPitch)*ease;smoothZoom+=(zoom-smoothZoom)*ease;const fx=inspecting&&selected?selected.x:0,fz=inspecting&&selected?selected.z:0;if(Math.abs(fx-focusX)+Math.abs(fz-focusZ)>.001)cameraMoving=true;focusX+=(fx-focusX)*ease;focusZ+=(fz-focusZ)*ease;lag+=delta;
+ const fixed=1/120;let count=0;while(lag>=fixed&&count<30){step(fixed*speed);lag-=fixed;count++}if(count>=30)lag=0;
  const cap=Number($('#n-fpscap').value)||0,minGap=cap?1000/cap:0;
  if(minGap===0||ts-lastRendered>=minGap-.45){
-  lastRendered=ts;render();fpsFrames++;
+  if(lastRendered){intervals.push(ts-lastRendered);if(intervals.length>120)intervals.shift()}lastRendered=ts;render();fpsFrames++;root.dataset.frameP95=(intervals.length?intervals.slice().sort((a,b)=>a-b)[Math.floor((intervals.length-1)*.95)]:0).toFixed(1);
   if(!fpsStart)fpsStart=ts;
   if(ts-fpsStart>=800){measuredFPS=Math.round(fpsFrames*1000/(ts-fpsStart));$('#n-fps').textContent='FPS: '+measuredFPS+' · '+graphicMode.toUpperCase()+' · '+frameMS.toFixed(1)+' ms CPU · '+drawCalls+' draws';
    if(graphicMode==='auto'){const before=resolutionScale;if(measuredFPS<42)resolutionScale=Math.max(.8,resolutionScale-.12);else if(measuredFPS>58)resolutionScale=Math.min(1.65,resolutionScale+.06);if(before!==resolutionScale)resizeW=-1}

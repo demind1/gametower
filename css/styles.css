@@ -146,3 +146,13 @@ html,body{height:100%}
 #neon3d #n-start{min-height:30px}
 #neon3d .footercontrols select{padding:4px}
 }
+
+/* 4.0: keyboard focus, restrained material palette, explicit scroll affordance. */
+#neon3d button:focus-visible,#neon3d select:focus-visible{outline:2px solid #55ddeb;outline-offset:2px}
+#neon3d .controls-panel{scrollbar-width:thin;scrollbar-color:#3b4b59 #10151c}
+#neon3d .controls-panel::-webkit-scrollbar{width:5px}
+#neon3d .controls-panel::-webkit-scrollbar-thumb{background:#3b4b59}
+#neon3d .kicker{color:#a6bbc6}
+#neon3d .item .symbol{filter:saturate(.65)}
+#neon3d .cam{min-width:32px}
+#neon3d{box-sizing:border-box}
