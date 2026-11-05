@@ -1,0 +1,148 @@
+#neon3d{--bg:#0a0d12;--panel:#111720;--rim:#2d3947;--white:#f3f7fb;--dim:#91a4b3;--ice:#b8f4ff;--gold:#f3d5a0;color:var(--white);font:13px/1.4 Inter,system-ui,Arial,sans-serif;background:var(--bg);border:1px solid #333f4d;border-radius:16px;overflow:hidden;min-width:0}#neon3d *{box-sizing:border-box}#neon3d button,#neon3d select{font:inherit}#neon3d button{cursor:pointer;touch-action:manipulation}#neon3d button:disabled{opacity:.38;cursor:not-allowed}#neon3d .top{padding:13px 15px;background:linear-gradient(105deg,#212a34,#0d1118);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}#neon3d .kicker{font-size:9px;font-weight:900;color:#9adceb;letter-spacing:2.7px}#neon3d h2{font-size:clamp(19px,3vw,27px);line-height:1.1;letter-spacing:.3px;margin:3px 0;font-weight:950}#neon3d h2 span{color:#b5f4ff}#neon3d .subtitle{font-size:10px;color:#8297a8;letter-spacing:.5px}#neon3d .stats{display:flex;gap:6px;flex-wrap:wrap}#neon3d .stat{background:#141c26;border:1px solid #334251;border-radius:9px;padding:6px 10px;min-width:70px}#neon3d .stat small{display:block;letter-spacing:1.1px;color:#94a7b4;font-size:9px;font-weight:800}#neon3d .stat b{font-size:20px;font-variant-numeric:tabular-nums}#neon3d .world{position:relative;background:radial-gradient(circle at 55% 40%,#192b34,#070a10 76%);line-height:0;overflow:hidden}#neon3d canvas{display:block;width:100%;aspect-ratio:1200/715;cursor:crosshair;touch-action:none}#neon3d .toast{position:absolute;z-index:2;left:50%;top:12px;transform:translateX(-50%);white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis;background:#0a121ae8;border:1px solid #6195a6;border-radius:8px;padding:10px 15px;color:#defbff;font-size:11px;font-weight:850;line-height:1.3;opacity:0;transition:opacity .2s;pointer-events:none}#neon3d .worldinfo{position:absolute;bottom:11px;left:12px;pointer-events:none;font-size:10px;color:#b9d2db;background:#0a111b9c;border:1px solid #344856;padding:7px 9px;border-radius:7px;line-height:1.4}#neon3d .camerabar{position:absolute;bottom:10px;right:10px;display:flex;gap:5px;line-height:1;z-index:2}#neon3d .cam{border:1px solid #4e6072;background:#101a26d9;color:#d5e8f1;border-radius:7px;padding:8px 10px;font-weight:850;font-size:13px}#neon3d .cam:hover{background:#304354}#neon3d .end{position:absolute;inset:0;background:#070b11eb;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:13px;padding:20px;line-height:1.4}#neon3d .end h3{font-size:clamp(27px,5vw,48px);font-weight:950;margin:0}#neon3d .end p{max-width:390px;font-size:14px;color:#b6c5d0;margin:0}#neon3d .progress{height:5px;background:#1e2834}#neon3d .progress div{height:100%;width:0;background:linear-gradient(90deg,#4b8297,#c4f4ff);transition:width .15s}#neon3d .section{border-top:1px solid #2a3945;padding:12px 14px;background:#111720}#neon3d .sectionhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}#neon3d .sectionhead b{font-size:10px;letter-spacing:1.7px}#neon3d .sectionhead small{font-size:10px;color:#8fa5b5}#neon3d .shop{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px}#neon3d .item{border:1px solid #344352;border-radius:9px;min-height:100px;background:#1a232d;color:#eaf3f6;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:8px 3px;min-width:0}#neon3d .item:hover{background:#263542}#neon3d .item.active{border-color:#abf0ff;background:#2b404b;box-shadow:inset 0 0 0 1px #8feaff40}#neon3d .symbol{width:34px;height:33px;display:grid;place-items:center;border:1px solid #ffffff35;border-radius:8px;font-size:21px;font-weight:950;color:#11202a}#neon3d .item b{font-size:11px}#neon3d .item .price{font-size:11px;color:#f4d396;font-weight:850}#neon3d .item .hint{font-size:9px;color:#98a9b8}#neon3d .info{color:#afc0ca;font-size:11px;min-height:27px;margin-bottom:9px;line-height:1.6}#neon3d .actions{display:flex;flex-wrap:wrap;gap:7px;align-items:stretch}#neon3d .btn{border:1px solid #3d4e5b;background:#212d39;color:#eef4f9;border-radius:8px;padding:10px 12px;font-size:11px;font-weight:850;white-space:nowrap}#neon3d .btn:hover:not(:disabled){filter:brightness(1.18)}#neon3d .btn.primary{background:#e8f9ff;color:#10202a;border-color:#def8ff;flex:1;font-size:12px}#neon3d .btn.ice{color:#b3efff}#neon3d .btn.gold{color:#ffdcaa}#neon3d .btn.red{color:#ffacab}#neon3d select{background:#1f2b37;border:1px solid #3d5060;color:#ebf5fa;border-radius:8px;padding:9px;font-size:11px}#neon3d .sep{border-top:1px solid #2b3845;margin:12px 0}#neon3d .footer{background:#0a0f16;color:#8597a7;padding:10px 13px;text-align:center;font-size:10px;line-height:1.8}@media(max-width:800px){#neon3d .shop{grid-template-columns:repeat(4,minmax(0,1fr))}#neon3d .item{min-height:85px}#neon3d .top{padding:10px}#neon3d .stat{min-width:62px;padding:5px 7px}#neon3d .stat b{font-size:17px}#neon3d .section{padding:10px}#neon3d .worldinfo{font-size:8px;bottom:5px;left:5px;padding:4px}#neon3d .cam{padding:6px 8px}}@media(max-width:430px){#neon3d .btn{font-size:10px;padding:9px 8px}#neon3d .item b{font-size:10px}#neon3d .item .hint{font-size:8px}}
+
+#neon3d .worldinfo{line-height:1.55;letter-spacing:.2px;backdrop-filter:blur(8px)}
+#neon3d .cam{backdrop-filter:blur(8px)}
+#neon3d .top{border-bottom:1px solid #384958}
+#neon3d .item{transition:transform .14s,border-color .14s,background .14s}
+#neon3d .item:hover{transform:translateY(-2px)}
+#neon3d .btn{transition:filter .12s,border-color .12s}
+#neon3d:fullscreen{position:fixed;inset:0;width:100vw;height:100dvh;max-height:100dvh;border:0;border-radius:0;display:flex;flex-direction:column;overflow:auto;background:#090e15}
+#neon3d:fullscreen .top{flex:0 0 auto}
+#neon3d:fullscreen .world{height:calc(100dvh - 91px);flex:0 0 calc(100dvh - 91px);min-height:320px}
+#neon3d:fullscreen canvas{height:100%;width:100%;aspect-ratio:auto}
+#neon3d:fullscreen .worldinfo{bottom:18px;left:18px;font-size:12px}
+#neon3d:fullscreen .camerabar{bottom:18px;right:18px}
+#neon3d:fullscreen .section,#neon3d:fullscreen .progress,#neon3d:fullscreen .footer{flex-shrink:0}
+@media(max-width:700px){#neon3d .camerabar{max-width:68%;flex-wrap:wrap;justify-content:flex-end}#neon3d .worldinfo{max-width:45%}}
+
+/* CHROMATIC - self-contained fixed cockpit; 3D and controls never detach in fullscreen. */
+html,body{height:100%}
+#neon3d{display:flex;flex-direction:column;width:100%;height:100dvh;min-height:620px;max-height:100dvh;border-radius:0;overflow:hidden}
+#neon3d .top{flex:0 0 auto;min-height:68px;padding:9px 15px}
+#neon3d .stat{padding:5px 8px}
+#neon3d .stat b{font-size:17px}
+#neon3d .game-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,370px);min-height:0;flex:1;overflow:hidden}
+#neon3d .battlefield{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+#neon3d .world{height:auto;flex:1 1 auto;min-height:0}
+#neon3d canvas{width:100%;height:100%;aspect-ratio:auto}
+#neon3d .progress{flex:0 0 5px}
+#neon3d .controls-panel{display:flex;flex-direction:column;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;background:#0d121b;border-left:1px solid #40515c;scrollbar-width:thin;scrollbar-color:#455969 #141e2b}
+#neon3d .controls-panel .section{flex:0 0 auto;padding:9px 11px;border-top:0;border-bottom:1px solid #283747;background:#101820}
+#neon3d .controls-panel .sectionhead{margin-bottom:6px}
+#neon3d .controls-panel .sectionhead small{font-size:9px}
+#neon3d .shop{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+#neon3d .item{min-height:64px;gap:2px;padding:4px 2px;border-radius:7px}
+#neon3d .symbol{height:24px;width:26px;font-size:15px;border-radius:5px}
+#neon3d .item b{font-size:10px}
+#neon3d .item .price{font-size:10px}
+#neon3d .item .hint{display:none}
+#neon3d .info{margin-bottom:6px;min-height:0;line-height:1.35;font-size:10px}
+#neon3d .btn{padding:8px 9px;font-size:10px}
+#neon3d .actions{gap:5px}
+#neon3d .sep{margin:9px 0}
+#neon3d .footercontrols{margin-top:auto}
+#neon3d .footercontrols .actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+#neon3d #n-start{grid-column:span 4;min-height:37px}
+#neon3d .footercontrols .actions .btn{min-width:0;white-space:normal;padding:7px 3px;font-size:10px}
+#neon3d select{font-size:10px;min-width:0;width:100%;padding:7px 4px}
+#neon3d .footercontrols select{grid-column:span 2}
+#neon3d .footer{flex:0 0 auto;font-size:9px;line-height:1.5;padding:7px 10px;background:#0c121a}
+#neon3d .upgrade-header{font-size:9px;font-weight:900;letter-spacing:1.15px;color:#b9dbe5;display:flex;justify-content:space-between;margin:9px 0 6px}
+#neon3d .upgrade-header small{font-size:9px;color:#7e9ba5;font-weight:400;letter-spacing:0}
+#neon3d .mods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+#neon3d .mod{border:1px solid #354956;background:linear-gradient(135deg,#1c2934,#111d27);color:#e9f6fa;min-width:0;min-height:46px;padding:5px 8px;text-align:left;border-radius:7px;display:flex;flex-direction:column;justify-content:center;gap:3px}
+#neon3d .mod:hover:not(:disabled){border-color:#a5eefa;background:#263b48}
+#neon3d .mod-title{font-size:10px;font-weight:900;letter-spacing:.5px}
+#neon3d .mod-value{font-size:10px;color:#f5d499;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#neon3d .worldinfo{font-size:10px}
+#neon3d:fullscreen{display:flex;position:fixed;width:100vw;height:100dvh;max-height:100dvh;overflow:hidden;inset:0}
+#neon3d:fullscreen .top{flex:0 0 auto}
+#neon3d:fullscreen .game-layout{display:grid;flex:1 1 auto;min-height:0;overflow:hidden}
+#neon3d:fullscreen .battlefield{min-height:0}
+#neon3d:fullscreen .world{flex:1 1 auto;height:auto;min-height:0}
+#neon3d:fullscreen canvas{height:100%;width:100%;aspect-ratio:auto}
+#neon3d:fullscreen .controls-panel{display:flex;min-height:0;overflow-y:auto}
+#neon3d:fullscreen .section,#neon3d:fullscreen .progress,#neon3d:fullscreen .footer{flex-shrink:0}
+@media(max-height:780px) and (min-width:851px){
+ #neon3d:fullscreen .footer{display:none}
+ #neon3d .top{min-height:53px;padding:6px 11px}#neon3d .subtitle{display:none}#neon3d .controls-panel .section{padding:6px 9px}
+ #neon3d .item{min-height:52px}#neon3d .symbol{height:21px;font-size:13px}#neon3d .mod{min-height:39px;padding:4px 6px}#neon3d .sep{margin:6px 0}#neon3d .footer{font-size:8px;padding:5px}
+}
+@media(max-width:850px){
+ #neon3d{height:auto;min-height:100dvh;max-height:none;overflow:visible}
+ #neon3d .game-layout{display:flex;flex-direction:column;overflow:visible}
+ #neon3d .battlefield{height:58dvh;min-height:300px;flex:0 0 auto}
+ #neon3d .controls-panel{overflow:visible;border-left:0;border-top:1px solid #45515e}
+ #neon3d:fullscreen{overflow:auto}#neon3d:fullscreen .game-layout{display:flex;flex-direction:column;overflow:auto}
+ #neon3d:fullscreen .battlefield{height:50dvh;flex:0 0 auto;min-height:240px}
+ #neon3d:fullscreen .world{height:auto;flex:1 1 auto;min-height:0}
+ #neon3d:fullscreen .controls-panel{overflow:visible}
+}
+
+
+/* STAGE 3: Night City visual language; one-screen command cockpit. */
+#neon3d{--panel:#10131d;--rim:#463c58;--ice:#72f9fa;--gold:#ffe06b;background:#080a14;border-color:#594375;}
+#neon3d .top{background:linear-gradient(106deg,#101b29 0%,#25152f 43%,#10121a 78%);border-bottom:1px solid #8655b159;box-shadow:inset 0 -2px 0 #f43c8b22;}
+#neon3d .top h2 span{color:#70faff;text-shadow:0 0 19px #3fe7fa88}
+#neon3d .kicker{color:#ff6fb5}
+#neon3d .stat{background:#111320bf;border-color:#424355}
+#neon3d .controls-panel{background:linear-gradient(180deg,#15121e,#0a111a 66%);border-left:1px solid #a764e068}
+#neon3d .controls-panel .section{background:#111521e8;border-bottom-color:#48405a}
+#neon3d .item{background:#161b27;border-color:#45435a}
+#neon3d .item.active{background:#263c48;border-color:#64f7ff;box-shadow:inset 0 0 0 1px #6aeeff52,0 0 10px #43e9ff24}
+#neon3d .mod{background:linear-gradient(135deg,#1b2231,#171221);border-color:#48415c}
+#neon3d .btn.primary{background:linear-gradient(110deg,#91f6fc,#d5f4ff);border-color:#abf5fa}
+#neon3d .btn.gold{color:#ffdd7d}
+#neon3d .btn.ice{color:#7cf2ff}
+#neon3d .world{background:radial-gradient(circle at 50% 40%,#292037,#080a15 76%)}
+#neon3d .worldinfo{border-color:#77517c;color:#d9f4ff;box-shadow:0 0 25px #c145f018}
+#neon3d .footer{color:#a49cb5;background:#0c1019}
+#neon3d #n-gfxlabel{font-size:10px;color:#ff96c8;font-weight:800;letter-spacing:.5px;padding:4px 1px 0}
+@media (min-width:1100px){#neon3d .game-layout{grid-template-columns:minmax(0,1fr) minmax(338px,380px)}}
+
+/* REFINED 3.1 — restrained AAA-inspired visual hierarchy */
+#neon3d .controls-panel .footer{display:none}
+#neon3d .controls-panel{scrollbar-width:none}
+#neon3d .controls-panel::-webkit-scrollbar{width:0}
+#neon3d{--bg:#090e17;--panel:#131d29;--rim:#314356;--ice:#8ad9e9;--gold:#f3c88e;background:#0a101a;border-color:#34465b}
+#neon3d .top{background:linear-gradient(115deg,#141f2c 0%,#172031 55%,#121824 100%);border-bottom:1px solid #354456;box-shadow:none}
+#neon3d .top h2 span{color:#b0eaf2;text-shadow:none}
+#neon3d .kicker{color:#d39ebb;letter-spacing:1.7px}
+#neon3d .controls-panel{background:#111924;border-left:1px solid #3c4c5d}
+#neon3d .controls-panel .section{background:#131c28;border-bottom:1px solid #29394a}
+#neon3d .controls-panel .sectionhead b{font-size:11px;letter-spacing:1.05px;color:#e5eefa}
+#neon3d .controls-panel .sectionhead small{font-size:10px;color:#98a9b9}
+#neon3d .item{background:#1b2633;border-color:#36495d;min-height:73px;gap:3px}
+#neon3d .item.active{background:#263946;border-color:#9ed8e4;box-shadow:inset 0 0 0 1px #7fcce830}
+#neon3d .symbol{width:29px;height:27px;font-size:17px}
+#neon3d .item b{font-size:12px}
+#neon3d .item .price{font-size:11px;color:#f1cf9c}
+#neon3d .info{font-size:12px;color:#bdcbd8;line-height:1.5}
+#neon3d .btn{background:#253341;border-color:#40576b;color:#eef2fa;font-size:11px;padding:9px 9px}
+#neon3d .btn.primary{background:#d4eefa;color:#162b39;border-color:#d4eefa}
+#neon3d .mod{min-height:52px;border-color:#3b4d62;background:linear-gradient(115deg,#202d3c,#17212e);gap:4px}
+#neon3d .mod-title{font-size:11px}
+#neon3d .mod-value{font-size:11px;color:#f1d6a9}
+#neon3d .upgrade-header{color:#c9dde8;font-size:10px;margin:10px 0 7px}
+#neon3d .controls-panel .section{padding:11px 13px}
+#neon3d .footercontrols .actions .btn{font-size:11px}
+#neon3d .footercontrols select{font-size:11px}
+#neon3d .worldinfo{font-size:11px;background:#101e2ac9;border:1px solid #445a6d;color:#c7d9e7;box-shadow:none}
+#neon3d .cam{background:#172635d9;border:1px solid #506275}
+#neon3d .world{background:#0b0f19}
+#neon3d .stat{background:#17222e;border:1px solid #344858}
+#neon3d #n-gfxlabel{color:#d7a9c2}
+@media(min-width:1100px){#neon3d .game-layout{grid-template-columns:minmax(0,1fr) minmax(395px,420px)}}
+@media(max-height:800px) and (min-width:851px){#neon3d .controls-panel .section{padding:7px 10px}#neon3d .item{min-height:62px}#neon3d .mod{min-height:43px}#neon3d .footer{display:none}#neon3d .top{min-height:55px}}
+@media(max-height:760px) and (min-width:851px){
+#neon3d .controls-panel .section{padding:5px 9px}
+#neon3d .item{min-height:55px;padding:2px;gap:1px}
+#neon3d .symbol{height:23px;width:26px;font-size:15px}
+#neon3d .item b{font-size:11px}
+#neon3d .item .price{font-size:10px}
+#neon3d .mod{min-height:38px;padding:3px 6px;gap:2px}
+#neon3d .upgrade-header{margin:6px 0 4px}
+#neon3d .footercontrols .actions .btn{padding:5px 3px}
+#neon3d #n-start{min-height:30px}
+#neon3d .footercontrols select{padding:4px}
+}
