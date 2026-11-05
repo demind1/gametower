@@ -1,3 +1,5 @@
-dist/
+dist/*
+!dist/NEON_OUTBREAK_5_OFFLINE.html
+!dist/NEON_OUTBREAK_5_SOURCE.zip
 __pycache__/
 node_modules/

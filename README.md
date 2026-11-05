@@ -2,6 +2,14 @@
 
 Playable offline cyberpunk tower defense: 8 tower types, 20 waves and procedural WebGL geometry/audio. This release is a validated graphics iteration; see [GRAPHICS_OVERHAUL.md](GRAPHICS_OVERHAUL.md) for implementation details, limitations and evidence.
 
+## Скачать готовую игру
+
+- [Автономная игра — NEON_OUTBREAK_5_OFFLINE.html](dist/NEON_OUTBREAK_5_OFFLINE.html): откройте файл на GitHub и нажмите **Download raw file**, затем откройте скачанный HTML в браузере.
+- [Игра, исходники и скриншоты — ZIP](dist/NEON_OUTBREAK_5_SOURCE.zip).
+- Весь репозиторий: **Code → Download ZIP**.
+
+Игра работает без интернета; устанавливать зависимости для игры не нужно.
+
 ## Play
 
 Open `index.html` in a current Chromium browser with hardware acceleration enabled. No installation, CDN or network access is needed. If local-file policy blocks it, run:
