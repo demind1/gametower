@@ -156,3 +156,19 @@ html,body{height:100%}
 #neon3d .item .symbol{filter:saturate(.65)}
 #neon3d .cam{min-width:32px}
 #neon3d{box-sizing:border-box}
+/* AFTERLIGHT: mission intelligence and campaign choices stay inside the cockpit. */
+#neon3d .mission{padding:12px 14px;border-bottom:1px solid #3b4b59;background:linear-gradient(120deg,#1c2b36,#10151c);display:grid;gap:5px;flex-shrink:0}
+#neon3d .mission b{font-size:11px;letter-spacing:.7px;color:#a6eaf2}
+#neon3d .mission small{font-size:10px;color:#e9ae63}
+#neon3d .research-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:7px}
+#neon3d .research-grid button{padding:8px 3px;display:grid;gap:4px;background:#202832;border:1px solid #465c6b;border-radius:6px;color:#d5e9ec;font-size:9px}
+#neon3d .research-grid small{font-size:9px;color:#a6c4ca}
+#neon3d .specializations{margin-top:10px;display:grid;gap:6px}
+#neon3d .specializations>small{font-size:9px;color:#a6bbc6}
+#neon3d #n-pulse{width:100%;font-size:10px}
+#neon3d .bossbar{position:absolute;top:64px;left:30%;width:40%;z-index:2;line-height:1.5;text-align:center;color:#e5a7ab;font-size:10px;letter-spacing:2px;pointer-events:none}
+#neon3d .bossbar[hidden]{display:none}
+#neon3d .bossbar div{height:5px;background:#27313d;margin-top:5px}
+#neon3d .bossbar i{display:block;height:100%;background:linear-gradient(90deg,#9774d4,#dc626a);transition:width .16s}
+#neon3d .mission{position:sticky;top:0;z-index:3}
+#neon3d .footercontrols{position:sticky;bottom:0;z-index:3;box-shadow:0 -8px 18px #090e17c9}

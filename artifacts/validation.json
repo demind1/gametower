@@ -4,42 +4,42 @@
     {
       "preset": "speed",
       "error": 0,
-      "draws": 624,
-      "frameP95": 483.4,
-      "fpsText": "FPS: 3 · HIGH · 5.8 ms CPU · 1047 draws",
-      "cpuMS": 1.5
+      "draws": 634,
+      "frameP95": 566.6,
+      "fpsText": "FPS: 1 · SPEED · 399.0 ms CPU · 634 draws",
+      "cpuMS": 1.7
     },
     {
       "preset": "balanced",
       "error": 0,
-      "draws": 628,
-      "frameP95": 716.6,
-      "fpsText": "FPS: 1 · SPEED · 2.0 ms CPU · 624 draws",
-      "cpuMS": 1.2
+      "draws": 638,
+      "frameP95": 583.3,
+      "fpsText": "FPS: 3 · BALANCED · 258.1 ms CPU · 1423 draws",
+      "cpuMS": 8.3
     },
     {
       "preset": "high",
       "error": 0,
-      "draws": 628,
-      "frameP95": 716.6,
-      "fpsText": "FPS: 3 · HIGH · 466.2 ms CPU · 1397 draws",
-      "cpuMS": 1.3
+      "draws": 638,
+      "frameP95": 649.9,
+      "fpsText": "FPS: 3 · HIGH · 485.7 ms CPU · 1423 draws",
+      "cpuMS": 1.7
     },
     {
       "preset": "ultra",
       "error": 0,
-      "draws": 1363,
-      "frameP95": 566.6,
-      "fpsText": "FPS: 3 · ULTRA · 494.9 ms CPU · 1517 draws",
-      "cpuMS": 3.2
+      "draws": 1383,
+      "frameP95": 600.1,
+      "fpsText": "FPS: 2 · HIGH · 1.6 ms CPU · 638 draws",
+      "cpuMS": 3.6
     },
     {
       "preset": "cinematic",
       "error": 0,
-      "draws": 1517,
-      "frameP95": 566.6,
-      "fpsText": "FPS: 2 · ULTRA · 2.7 ms CPU · 1363 draws",
-      "cpuMS": 670.3
+      "draws": 1543,
+      "frameP95": 649.9,
+      "fpsText": "FPS: 3 · ULTRA · 3.1 ms CPU · 1543 draws",
+      "cpuMS": 899.6
     }
   ],
   "layouts": [
@@ -55,7 +55,7 @@
         860,
         653.609375
       ],
-      "panelScroll": false
+      "panelScroll": true
     },
     {
       "fullscreen": true,
@@ -69,7 +69,7 @@
         1116,
         777.71875
       ],
-      "panelScroll": false
+      "panelScroll": true
     },
     {
       "fullscreen": true,
@@ -109,7 +109,7 @@
     {
       "type": "mg",
       "damage": 160,
-      "particles": 12
+      "particles": 9
     },
     {
       "type": "rail",
@@ -119,7 +119,7 @@
     {
       "type": "cryo",
       "damage": 46,
-      "particles": 9
+      "particles": 10
     },
     {
       "type": "mortar",
@@ -129,139 +129,160 @@
     {
       "type": "arc",
       "damage": 136,
-      "particles": 1
+      "particles": 2
     },
     {
       "type": "flame",
       "damage": 157.2666666666687,
-      "particles": 35
+      "particles": 30
     }
   ],
   "abilities": true,
+  "afterlight": true,
   "campaign": [
     {
       "wave": 1,
       "hp": 28,
       "kills": 26,
+      "researchPoints": 0,
       "done": true
     },
     {
       "wave": 2,
       "hp": 28,
       "kills": 58,
+      "researchPoints": 0,
       "done": true
     },
     {
       "wave": 3,
       "hp": 28,
       "kills": 96,
+      "researchPoints": 1,
       "done": true
     },
     {
       "wave": 4,
       "hp": 28,
       "kills": 140,
+      "researchPoints": 1,
       "done": true
     },
     {
       "wave": 5,
       "hp": 28,
       "kills": 210,
+      "researchPoints": 1,
       "done": true
     },
     {
       "wave": 6,
       "hp": 28,
       "kills": 276,
+      "researchPoints": 2,
       "done": true
     },
     {
       "wave": 7,
       "hp": 28,
       "kills": 348,
+      "researchPoints": 2,
       "done": true
     },
     {
       "wave": 8,
       "hp": 28,
       "kills": 428,
+      "researchPoints": 2,
       "done": true
     },
     {
       "wave": 9,
       "hp": 28,
       "kills": 512,
+      "researchPoints": 3,
       "done": true
     },
     {
       "wave": 10,
       "hp": 28,
       "kills": 626,
+      "researchPoints": 3,
       "done": true
     },
     {
       "wave": 11,
       "hp": 28,
       "kills": 724,
+      "researchPoints": 3,
       "done": true
     },
     {
       "wave": 12,
       "hp": 28,
       "kills": 828,
+      "researchPoints": 4,
       "done": true
     },
     {
       "wave": 13,
       "hp": 28,
       "kills": 940,
+      "researchPoints": 4,
       "done": true
     },
     {
       "wave": 14,
       "hp": 28,
       "kills": 1058,
+      "researchPoints": 4,
       "done": true
     },
     {
       "wave": 15,
       "hp": 28,
       "kills": 1204,
+      "researchPoints": 5,
       "done": true
     },
     {
       "wave": 16,
       "hp": 28,
       "kills": 1336,
+      "researchPoints": 5,
       "done": true
     },
     {
       "wave": 17,
       "hp": 28,
       "kills": 1474,
+      "researchPoints": 5,
       "done": true
     },
     {
       "wave": 18,
       "hp": 28,
       "kills": 1618,
+      "researchPoints": 6,
       "done": true
     },
     {
       "wave": 19,
       "hp": 28,
       "kills": 1768,
+      "researchPoints": 6,
       "done": true
     },
     {
       "wave": 20,
       "hp": 28,
       "kills": 1950,
+      "researchPoints": 6,
       "done": true
     }
   ],
   "offline": {
-    "frames": 3,
+    "frames": 2,
     "error": 0,
     "externalResources": 0
   },

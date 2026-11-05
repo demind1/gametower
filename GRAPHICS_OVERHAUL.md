@@ -62,3 +62,11 @@ Tests run on Chromium SwiftShader (software WebGL). Timings and FPS are observat
 ## Remaining requested work
 
 The next milestone should focus on dynamic instancing and measured hardware frame budgets, authored-quality zombie animation/deaths, richer per-material maps and local lighting, advanced smoke/heat effects, and more architectural variation. HDR/MSAA framebuffer support, full FXAA/SMAA (the inherited pass is a simple contrast-aware five-tap filter), SSAO, SSR, skin subsurface scattering, physically accurate glass and volumetric atmosphere are not claimed. The current release is a tested playable foundation and model/material/shadow upgrade, not the entirety of the requested high-end art production.
+
+## AFTERLIGHT 5.0 update
+
+The second iteration adds real campaign decisions: three ranked doctrines, mutually exclusive specializations, alternating operation modifiers, elite infected, a second boss phase, free cooldown-based tactical pulse, kill-chain rewards and perfect-wave bonuses. A mission forecast, boss health bar and integrated research panel make the rules visible. Existing paid abilities, tower ranks/modifications and twenty-wave campaign remain. First-target priority now measures progress within the path segment instead of distance to the firing tower. Shift-place supports repeated construction.
+
+Presentation adds a procedural distant skyline, a bounded 100-drop world-space rain field using the preallocated particle VBO (off on Performance), specialization geometry and elite armor. This is restrained atmospheric rain represented by small particles, not fluid simulation. No GPU buffers are created for rain during gameplay. The buffer capacity grows from 550 to 750 records; combat still caps at 550. New HUD content scrolls within the same cockpit.
+
+Validation additionally checks doctrine spending, exclusivity of specializations, cooldown lockout, and six earned research points over twenty waves. Campaign tests are funded simulations and do not establish natural-economy balance. The latest source/standalone filenames use `NEON_OUTBREAK_5`. Previous 4.0 technical limitations still apply: this is not a quantified 100× visual/performance improvement.
